@@ -6,13 +6,13 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class mqttController {
+public class mqttPunlisher {
     public void start_broker() {
         String subTopic = "test";
         String pubTopic = "test";
         String content = "Hello World";
         int qos = 2;
-        String broker = "tcp://10.211.55.3:1883";
+        String broker = "";
         String clientId = "emqx_test";
         MemoryPersistence persistence = new MemoryPersistence();
 
