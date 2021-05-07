@@ -1,9 +1,10 @@
 package at.fhcampuswien.mqtt.controller;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import at.fhcampuswien.mqtt.database.DatabaseConnection;
+
 import java.sql.Timestamp;
 import java.util.concurrent.CountDownLatch;
+import java.io.*;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -13,7 +14,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class mqttSubscriber extends Thread implements KeyListener {
+public class MqttSubscriber extends Thread {
+
     private MqttClient mqttClient;
 
     public void run() {
@@ -63,6 +65,7 @@ public class mqttSubscriber extends Thread implements KeyListener {
                             "\n\tTopic:   " + topic +
                             "\n\tMessage: " + new String(message.getPayload()) +
                             "\n\tQoS:     " + message.getQos() + "\n");
+                    mqttMessageStorage(time + " " + new String(message.getPayload()));
                     latch.countDown(); // unblock main thread
                 }
 
@@ -105,28 +108,21 @@ public class mqttSubscriber extends Thread implements KeyListener {
         }
     }
 
+
 //---------------------------------------------------------------------------------------------------------------------//
-    //Experimental
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
+    //Add the messages and timestamp into a file
+    private void mqttMessageStorage(String message) {
         try {
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                mqttClient.disconnect();
-                System.out.println("Exiting");
-                System.exit(0);
-            }
-        } catch (MqttException mqttException) {
-            mqttException.printStackTrace();
-        }
-    }
+            FileWriter fileWriter = new FileWriter("mqttMessages.txt", true);
 
-    @Override
-    public void keyReleased(KeyEvent e) {
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(message);
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+            bufferedWriter.close();
+        } catch (IOException ioe) {
+            ioe.fillInStackTrace();
+        }
     }
 //---------------------------------------------------------------------------------------------------------------------//
 }

@@ -6,7 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-public class mqttPunlisher {
+public class MqttPublisher {
     public void start_broker() {
         String subTopic = "test";
         String pubTopic = "test";
