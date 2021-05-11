@@ -23,10 +23,11 @@ public class MqttSubscriber extends Thread {
         System.out.println("JUMO-BrokerSubscriber initializing...");
 
         /*
-         * For trying to connect one must change the host:tcp://<host:port>
-         *     username if required
-         *     password if required
+         *  For trying to connect one must change the host:tcp://<host:port>
+         *  username if required
+         *  password if required
          */
+        //TODO Change the parameters
         String host = "tcp://test.mosquitto.org:1883";
         String username = "shabbir";
         String password = "campus09";
@@ -55,6 +56,8 @@ public class MqttSubscriber extends Thread {
             // Callback - Anonymous inner-class for receiving messages
             mqttClient.setCallback(new MqttCallback() {
 
+                //TODO Method needs to be changed!
+                //FIXME messages must go to the database
 
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     // Called when a message arrives from the server that
@@ -91,13 +94,14 @@ public class MqttSubscriber extends Thread {
                 System.out.println("I was awoken while waiting");
             }
 
+            //TODO Optimization
 //---------------------------------------------------------------------------------------------------------------------//
             // After receiving a message it disconnect. But we don't want that. It should listen for other messages.
             //Disconnect the client
             /*mqttClient.disconnect();
             System.out.println("Exiting");
-//---------------------------------------------------------------------------------------------------------------------//
             System.exit(0);*/
+//---------------------------------------------------------------------------------------------------------------------//
         } catch (MqttException me) {
             System.out.println("reason " + me.getReasonCode());
             System.out.println("msg " + me.getMessage());
@@ -108,7 +112,7 @@ public class MqttSubscriber extends Thread {
         }
     }
 
-
+    //TODO Delete it later
 //---------------------------------------------------------------------------------------------------------------------//
     //Add the messages and timestamp into a file
     private void mqttMessageStorage(String message) {
