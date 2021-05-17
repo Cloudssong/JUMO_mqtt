@@ -1,5 +1,23 @@
-# JUMO MQTT Datenbank
-MQTT und Hilfsprogramm
+# JUMO MQTT-Datenbank
+***
 
-https://tutorials.solace.dev/java-mqtt-paho/publish-subscribe/ 
+## Project status
+- [x] Mqtt Publisher
+- [x] Mqtt Subscriber
+- [ ] Database Connection
+- [ ] Tests
+- [ ] Runnable Program
+- [ ] Transferring to the Server  
 
+## Description
+On work
+
+## Installation
+On work
+
+## Authors
+* **Shabbir Islam**
+* **Lukas Geier**
+
+## License
+On work
