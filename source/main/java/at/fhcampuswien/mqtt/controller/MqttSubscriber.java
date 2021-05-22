@@ -28,8 +28,8 @@ public class MqttSubscriber extends Thread {
          *  password if required
          */
         //TODO Change the parameters
-        String host = "tcp://test.mosquitto.org:1883";
-        String username = "shabbir";
+        String host = "tcp://195.201.96.148:1883";
+        String username = "developer";
         String password = "campus09";
         MemoryPersistence persistence = new MemoryPersistence();
 
@@ -50,7 +50,7 @@ public class MqttSubscriber extends Thread {
             final CountDownLatch latch = new CountDownLatch(1);
 
             // Topic filter the client will subscribe to
-            final String subTopic = "shabbirTest";
+            final String subTopic = "/#";
 
 
             // Callback - Anonymous inner-class for receiving messages
@@ -69,7 +69,14 @@ public class MqttSubscriber extends Thread {
                             "\n\tMessage: " + new String(message.getPayload()) +
                             "\n\tQoS:     " + message.getQos() + "\n");
                     mqttMessageStorage(time + " " + new String(message.getPayload()));
+
+                    //start database connection
+                    //DatabaseConnection db1 = new DatabaseConnection();
+                    //db1.readDataBase();
+                    //message.getPayload();
+
                     latch.countDown(); // unblock main thread
+
                 }
 
                 public void connectionLost(Throwable cause) {

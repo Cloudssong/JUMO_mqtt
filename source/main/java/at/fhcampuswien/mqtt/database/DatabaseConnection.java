@@ -16,54 +16,68 @@ public class DatabaseConnection {
     private ResultSet resultSet = null;
 
     //TODO Change parameters
-    private String url = "";
-    private String username = "";
-    private String password = "";
+    private String url = "jdbc:mysql://195.201.96.148:3306/jumo_data";
+    private String username = "developer";
+    private String password = "campus09";
 
 
     //TODO Optimization
-    public void readDataBase(String co2, String v2o, String temperature) throws Exception {
+    //String co2, String v2o, String temperature - parameter
+    public void readDataBase() throws Exception {
         try {
-            int year = Calendar.getInstance().get(Calendar.YEAR);
-            int month = Calendar.getInstance().get(Calendar.MONTH);
-            int day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
             // This will load the MySQL driver, each DB has its own driver
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             // Setup the connection with the DB
             connect = DriverManager.getConnection(url, username, password);
-
+            System.out.println("connected to database");
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
             // Result set get the result of the SQL query
-            resultSet = statement.executeQuery("select * from \"table name\"");
+            resultSet = statement.executeQuery("select * from jumo_values");
             writeResultSet(resultSet);
+
 
             // PreparedStatements can use variables and are more efficient
-            preparedStatement = connect.prepareStatement("insert into  \"table name\" values (default, ?, ?, ?, ? , ?, ?)");
-            // "myuser, webpage, datum, summary, COMMENTS from feedback.comments");
-            // Parameters start with 1
-            preparedStatement.setString(1, "Test");
-            preparedStatement.setString(2, "TestEmail");
-            preparedStatement.setString(3, "TestWebpage");
-            preparedStatement.setDate(4, new java.sql.Date(Calendar.getInstance().get(Calendar.DATE)));
-            preparedStatement.setString(5, "TestSummary");
-            preparedStatement.setString(6, "TestComment");
-            preparedStatement.executeUpdate();
+            preparedStatement = connect.prepareStatement("insert into  jumo_values values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
+            // Parameters start with 1
+            preparedStatement.setFloat(1, 1);
+            preparedStatement.setFloat(2, 2);
+            preparedStatement.setFloat(3, 3);
+            preparedStatement.setFloat(4, 4);
+            preparedStatement.setFloat(5, 5);
+            preparedStatement.setFloat(6, 6);
+            preparedStatement.setFloat(7, 7);
+            preparedStatement.setFloat(8, 8);
+            preparedStatement.setFloat(9, 9);
+            preparedStatement.setFloat(10, 10);
+            preparedStatement.setFloat(11, 11);
+            preparedStatement.setFloat(12, 12);
+            preparedStatement.setFloat(13, 13);
+            preparedStatement.setFloat(14, 14);
+            preparedStatement.setFloat(15, 15);
+            preparedStatement.executeUpdate();
+            System.out.println("updates executed");
+
+            /* show whats in the database
             preparedStatement = connect
-                    .prepareStatement("SELECT myuser, webpage, datum, summary, COMMENTS from feedback.comments");
+                    .prepareStatement("SELECT ID, Temp1, Temp2, Temp3, rH1, rH2, rH3, P1, P2, P3, TA, TB, VOC1, VOC2, CO2, rh from jumo_values");
             resultSet = preparedStatement.executeQuery();
             writeResultSet(resultSet);
+             */
 
+            /*
             // Remove again the insert comment
             preparedStatement = connect
                     .prepareStatement("delete from feedback.comments where myuser= ? ; ");
             preparedStatement.setString(1, "Test");
             preparedStatement.executeUpdate();
 
+
             resultSet = statement
-                    .executeQuery("select * from feedback.comments");
+                    .executeQuery("select * from jumo_values");
             writeMetaData(resultSet);
+             */
 
         } catch (Exception e) {
             throw e;
@@ -92,16 +106,39 @@ public class DatabaseConnection {
             // also possible to get the columns via the column number
             // which starts at 1
             // e.g. resultSet.getSTring(2);
-            String user = resultSet.getString("myuser");
-            String website = resultSet.getString("webpage");
-            String summary = resultSet.getString("summary");
-            //Date date = resultSet.getDate("datum");
-            String comment = resultSet.getString("comments");
-            System.out.println("User: " + user);
-            System.out.println("Website: " + website);
-            System.out.println("summary: " + summary);
-            //System.out.println("Date: " + date);
-            System.out.println("Comment: " + comment);
+            Float Temp1 = resultSet.getFloat(2);
+            Float Temp2 = resultSet.getFloat(3);
+            Float Temp3 = resultSet.getFloat(4);
+            Float rH1 = resultSet.getFloat(5);
+            Float rH2 = resultSet.getFloat(6);
+            Float rH3 = resultSet.getFloat(7);
+            Float P1 = resultSet.getFloat(8);
+            Float P2 = resultSet.getFloat(9);
+            Float P3 = resultSet.getFloat(10);
+            Float TA = resultSet.getFloat(11);
+            Float TB = resultSet.getFloat(12);
+            Float VOC1 = resultSet.getFloat(13);
+            Float VOC2 = resultSet.getFloat(14);
+            Float CO2 = resultSet.getFloat(15);
+            Float rH = resultSet.getFloat(16);
+
+            //print the values
+            System.out.println("Temp1: " + Temp1);
+            System.out.println("Temp2: " + Temp2);
+            System.out.println("Temp3: " + Temp3);
+            System.out.println("rH1: " + rH1);
+            System.out.println("rH2: " + rH2);
+            System.out.println("rH3: " + rH3);
+            System.out.println("P1: " + P1);
+            System.out.println("P2: " + P2);
+            System.out.println("P3: " + P3);
+            System.out.println("TA: " + TA);
+            System.out.println("TB: " + TB);
+            System.out.println("VOC1: " + VOC1);
+            System.out.println("VOC: " + VOC2);
+            System.out.println("CO2: " + CO2);
+            System.out.println("rH: " + rH);
+
         }
     }
 
