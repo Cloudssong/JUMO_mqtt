@@ -23,7 +23,7 @@ public class DatabaseConnection {
 
     //TODO Optimization
     //String co2, String v2o, String temperature - parameter
-    public void readDataBase() throws Exception {
+    public void readDataBase(float temp1, float temp2, float temp3, float rH1, float rH2, float rH3, float P1, float P2, float P3, float TA, float TB, float VOC1, float VOC2, float CO2, float rH, float v) throws Exception {
         try {
             // This will load the MySQL driver, each DB has its own driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -32,30 +32,33 @@ public class DatabaseConnection {
             System.out.println("connected to database");
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
+
             // Result set get the result of the SQL query
+            /* we do not need this method anymore
             resultSet = statement.executeQuery("select * from jumo_values");
             writeResultSet(resultSet);
+             */
 
 
             // PreparedStatements can use variables and are more efficient
             preparedStatement = connect.prepareStatement("insert into  jumo_values values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             // Parameters start with 1
-            preparedStatement.setFloat(1, 1);
-            preparedStatement.setFloat(2, 2);
-            preparedStatement.setFloat(3, 3);
-            preparedStatement.setFloat(4, 4);
-            preparedStatement.setFloat(5, 5);
-            preparedStatement.setFloat(6, 6);
-            preparedStatement.setFloat(7, 7);
-            preparedStatement.setFloat(8, 8);
-            preparedStatement.setFloat(9, 9);
-            preparedStatement.setFloat(10, 10);
-            preparedStatement.setFloat(11, 11);
-            preparedStatement.setFloat(12, 12);
-            preparedStatement.setFloat(13, 13);
-            preparedStatement.setFloat(14, 14);
-            preparedStatement.setFloat(15, 15);
+            preparedStatement.setFloat(1, temp1);
+            preparedStatement.setFloat(2, temp2);
+            preparedStatement.setFloat(3, temp3);
+            preparedStatement.setFloat(4, rH1);
+            preparedStatement.setFloat(5, rH2);
+            preparedStatement.setFloat(6, rH3);
+            preparedStatement.setFloat(7, P1);
+            preparedStatement.setFloat(8, P2);
+            preparedStatement.setFloat(9, P3);
+            preparedStatement.setFloat(10, TA);
+            preparedStatement.setFloat(11, TB);
+            preparedStatement.setFloat(12, VOC1);
+            preparedStatement.setFloat(13, VOC2);
+            preparedStatement.setFloat(14, CO2);
+            preparedStatement.setFloat(15, rH);
             preparedStatement.executeUpdate();
             System.out.println("updates executed");
 

@@ -2,6 +2,7 @@ package at.fhcampuswien.mqtt.controller;
 
 import at.fhcampuswien.mqtt.database.DatabaseConnection;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.concurrent.CountDownLatch;
 import java.io.*;
@@ -17,6 +18,10 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 public class MqttSubscriber extends Thread {
 
     private MqttClient mqttClient;
+
+    //array initialization
+    int i = 0;
+    float[] arr = new float[16];
 
     public void run() {
 
@@ -71,9 +76,20 @@ public class MqttSubscriber extends Thread {
                     mqttMessageStorage(time + " " + new String(message.getPayload()));
 
                     //start database connection
-                    //DatabaseConnection db1 = new DatabaseConnection();
-                    //db1.readDataBase();
-                    //message.getPayload();
+                    arr[i] = Float.parseFloat(new String(message.getPayload()));
+                    System.out.println("Array VALUE: " +arr[i]);
+
+                    i++;    //increment counter value
+
+                    System.out.println("Counter: " +i);
+
+                    if (i == 15) {
+                        //pass the values to the database
+                        DatabaseConnection db1 = new DatabaseConnection();
+                        arr = convertArray(arr);    //convert values to correct comma
+                        db1.readDataBase(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12], arr[13], arr[14], arr[15]);
+                        i = 0;  //reset counter
+                    }
 
                     latch.countDown(); // unblock main thread
 
@@ -136,5 +152,23 @@ public class MqttSubscriber extends Thread {
         }
     }
 //---------------------------------------------------------------------------------------------------------------------//
+
+    private float[] convertArray (float[] oldArray)
+    {
+        oldArray[0] = oldArray[0]/10;
+        oldArray[1] = oldArray[1]/10;
+        oldArray[2] = oldArray[2]/10;
+        oldArray[3] = oldArray[3]/10;
+        oldArray[4] = oldArray[4]/10;
+        oldArray[5] = oldArray[5]/10;
+        oldArray[6] = oldArray[6]/10;
+        oldArray[7] = oldArray[7]/10;
+        oldArray[8] = oldArray[8]/10;
+        oldArray[9] = oldArray[9]/10;
+        oldArray[10] = oldArray[10]/10;
+
+        return oldArray;
+    }
+
 }
 
