@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="jumo_mqtt@192.168.178.47" uuid="10838643-5f5c-4597-b9a9-add3c36e20e4">
+    <data-source source="LOCAL" name="developer@195.201.96.148" uuid="aa2216f6-45ad-473d-83e7-b941f514d305">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://192.168.178.47:3306/jumo_mqtt</jdbc-url>
+      <jdbc-url>jdbc:mysql://195.201.96.148:3306/data</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="serverTimezone" value="UTC" />
+      </driver-properties>
     </data-source>
   </component>
 </project>

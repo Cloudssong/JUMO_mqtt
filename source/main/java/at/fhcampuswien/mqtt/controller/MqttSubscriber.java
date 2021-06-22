@@ -2,6 +2,7 @@ package at.fhcampuswien.mqtt.controller;
 
 import at.fhcampuswien.mqtt.database.DatabaseConnection;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.concurrent.CountDownLatch;
 import java.io.*;
@@ -18,6 +19,10 @@ public class MqttSubscriber extends Thread {
 
     private MqttClient mqttClient;
 
+    //array initialization
+    int i = 0;
+    float[] arr = new float[16];
+
     public void run() {
 
         System.out.println("JUMO-BrokerSubscriber initializing...");
@@ -28,8 +33,8 @@ public class MqttSubscriber extends Thread {
          *  password if required
          */
         //TODO Change the parameters
-        String host = "tcp://test.mosquitto.org:1883";
-        String username = "shabbir";
+        String host = "tcp://195.201.96.148:1883";
+        String username = "developer";
         String password = "campus09";
         MemoryPersistence persistence = new MemoryPersistence();
 
@@ -50,7 +55,7 @@ public class MqttSubscriber extends Thread {
             final CountDownLatch latch = new CountDownLatch(1);
 
             // Topic filter the client will subscribe to
-            final String subTopic = "shabbirTest";
+            final String subTopic = "/#";
 
 
             // Callback - Anonymous inner-class for receiving messages
@@ -69,7 +74,25 @@ public class MqttSubscriber extends Thread {
                             "\n\tMessage: " + new String(message.getPayload()) +
                             "\n\tQoS:     " + message.getQos() + "\n");
                     mqttMessageStorage(time + " " + new String(message.getPayload()));
+
+                    //start database connection
+                    arr[i] = Float.parseFloat(new String(message.getPayload()));
+                    System.out.println("Array VALUE: " +arr[i]);
+
+                    i++;    //increment counter value
+
+                    System.out.println("Counter: " +i);
+
+                    if (i == 15) {
+                        //pass the values to the database
+                        DatabaseConnection db1 = new DatabaseConnection();
+                        arr = convertArray(arr);    //convert values to correct comma
+                        db1.readDataBase(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[11], arr[12], arr[13], arr[14], arr[15]);
+                        i = 0;  //reset counter
+                    }
+
                     latch.countDown(); // unblock main thread
+
                 }
 
                 public void connectionLost(Throwable cause) {
@@ -129,5 +152,23 @@ public class MqttSubscriber extends Thread {
         }
     }
 //---------------------------------------------------------------------------------------------------------------------//
+
+    private float[] convertArray (float[] oldArray)
+    {
+        oldArray[0] = oldArray[0]/10;
+        oldArray[1] = oldArray[1]/10;
+        oldArray[2] = oldArray[2]/10;
+        oldArray[3] = oldArray[3]/10;
+        oldArray[4] = oldArray[4]/10;
+        oldArray[5] = oldArray[5]/10;
+        oldArray[6] = oldArray[6]/10;
+        oldArray[7] = oldArray[7]/10;
+        oldArray[8] = oldArray[8]/10;
+        oldArray[9] = oldArray[9]/10;
+        oldArray[10] = oldArray[10]/10;
+
+        return oldArray;
+    }
+
 }
 
